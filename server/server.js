@@ -23,7 +23,7 @@ server.post("/newUser", async (req, res) => {
         console.log(newUserAdded?.error);
         return res.status(500).json({ message: "Internal server error", error: newUserAdded?.error });
     }
-    return res.status(200).json({ message: "User Added Successfully!" });
+    return res.status(200).json({ status: 200, message: "User Added Successfully!" });
 });
 server.get("/fetchBrackets", async (req, res) => {
     const fetchedBrackets = await fetchAllBrackets();
