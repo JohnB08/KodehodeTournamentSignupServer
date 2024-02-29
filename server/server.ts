@@ -2,7 +2,6 @@ import express from "express"
 import cors from "cors"
 import { postNewUser, fetchAllBrackets, checkExistingName } from "../pgFunctions/postUsers.js";
 import { initializeServer } from "../pgFunctions/initializeServer.js";
-import { validateUsername } from "../typeValidatingUserName/typeValidatingUserName.js";
 import { checkUsername } from "../typeValidatingUserName/sanitizeUsername.js";
 
 const server = express();
