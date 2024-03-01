@@ -105,6 +105,8 @@ export const fetchAllBrackets = async () =>{
                 Bracket_User_Relationship bur ON b.bracket_id = bur.bracket_id
             JOIN 
                 Users u ON bur.user_id = u.user_id
+            WHERE
+                u.is_deleted = FALSE
             GROUP BY 
                 b.bracket_id, b.bracket_name;
         `)
