@@ -4,8 +4,9 @@ const allBadWords = en.concat(no)
 
 export const checkUsername = (username: string) =>{
     let isUsernameBad = false
+    const normalizedUsername = username.toLowerCase()
     allBadWords.forEach((badWord: string)=>{
-        if (username.includes(badWord)){
+        if (normalizedUsername.includes(badWord)){
             isUsernameBad = true
         }
     })
