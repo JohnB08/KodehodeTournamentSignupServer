@@ -1,5 +1,9 @@
 import { db } from "../pgSettings/pgSettings.js";
 import { v4 as uuid } from "uuid";
+/**
+ * function for querying postgres for brackets with spare room.
+ * @returns
+ */
 const fetchUnfilledBracket = async () => {
     try {
         const data = await db.query(`
@@ -14,6 +18,11 @@ const fetchUnfilledBracket = async () => {
         return { success: false, error };
     }
 };
+/**
+ * makes new bracket and post new user to bracket.
+ * @param username
+ * @returns
+ */
 const postNewUserInNewBracket = async (username) => {
     const uniqueId = uuid();
     const bracketName = `MKBRACKET_${uniqueId}`;
@@ -45,6 +54,12 @@ const postNewUserInNewBracket = async (username) => {
         return { success: false, error };
     }
 };
+/**
+ * post new user in bracket with matching bracket id.
+ * @param username
+ * @param bracket_id
+ * @returns
+ */
 const postNewUserInCurrentBracket = async (username, bracket_id) => {
     try {
         const data = await db.query(`
@@ -61,6 +76,11 @@ const postNewUserInCurrentBracket = async (username, bracket_id) => {
         return { success: false, error };
     }
 };
+/**
+ * Function for posting new user to postgres server.
+ * @param username
+ * @returns
+ */
 export const postNewUser = async (username) => {
     const bracketWithRoom = await fetchUnfilledBracket();
     console.log(bracketWithRoom);
@@ -80,6 +100,10 @@ export const postNewUser = async (username) => {
         return { success: true, data: data.data };
     }
 };
+/**
+ * fetches all brackets, unless user is ignored.
+ * @returns
+ */
 export const fetchAllBrackets = async () => {
     try {
         const data = await db.query(`
@@ -93,6 +117,8 @@ export const fetchAllBrackets = async () => {
                 Bracket_User_Relationship bur ON b.bracket_id = bur.bracket_id
             JOIN 
                 Users u ON bur.user_id = u.user_id
+            WHERE
+                u.is_deleted = FALSE
             GROUP BY 
                 b.bracket_id, b.bracket_name;
         `);
@@ -102,6 +128,11 @@ export const fetchAllBrackets = async () => {
         return { success: false, error };
     }
 };
+/**
+ * Checks for existing username
+ * @param username
+ * @returns
+ */
 export const checkExistingName = async (username) => {
     try {
         const data = await db.query(`SELECT * FROM Users WHERE username = '${username}'`);

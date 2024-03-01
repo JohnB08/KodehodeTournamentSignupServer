@@ -1,6 +1,11 @@
 import { db } from "../pgSettings/pgSettings.js";
 import {v4 as uuid} from "uuid"
 
+
+/**
+ * function for querying postgres for brackets with spare room.
+ * @returns 
+ */
 const fetchUnfilledBracket = async() =>{
     try{
         const data = await db.query(`
@@ -16,6 +21,12 @@ const fetchUnfilledBracket = async() =>{
     }
 }
 
+
+/**
+ * makes new bracket and post new user to bracket.
+ * @param username 
+ * @returns 
+ */
 const postNewUserInNewBracket = async (username: string)=>{
     const uniqueId = uuid()
     const bracketName = `MKBRACKET_${uniqueId}`
@@ -49,7 +60,12 @@ const postNewUserInNewBracket = async (username: string)=>{
         }
 }
 
-
+/**
+ * post new user in bracket with matching bracket id.
+ * @param username 
+ * @param bracket_id 
+ * @returns 
+ */
 const postNewUserInCurrentBracket = async (username: string, bracket_id: number) =>{
             try{
             const data = await db.query(`
@@ -69,6 +85,11 @@ const postNewUserInCurrentBracket = async (username: string, bracket_id: number)
 
 
 
+    /**
+     * Function for posting new user to postgres server.
+     * @param username 
+     * @returns 
+     */
 export const postNewUser = async (username: string) =>{
 
     const bracketWithRoom = await fetchUnfilledBracket();
@@ -92,6 +113,11 @@ export const postNewUser = async (username: string) =>{
 
 }
 
+
+/**
+ * fetches all brackets, unless user is ignored.
+ * @returns 
+ */
 export const fetchAllBrackets = async () =>{
     try{
         const data = await db.query(`
@@ -116,6 +142,12 @@ export const fetchAllBrackets = async () =>{
     }
 }
 
+
+/**
+ * Checks for existing username
+ * @param username 
+ * @returns 
+ */
 export const checkExistingName = async (username: string) =>{
     try{
         const data = await db.query(`SELECT * FROM Users WHERE username = '${username}'`)
